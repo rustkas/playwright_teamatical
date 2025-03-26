@@ -1,4 +1,4 @@
-# playwright-тексты сайта [playwright](https://www.teamatical.com/)
+# playwright-тесты сайта [playwright](https://www.teamatical.com/)
 
 
 Рабочие команды:
