@@ -1,32 +1,37 @@
-# Prerequisites
-*.d
+# Node.js
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
-
-# Precompiled Headers
-*.gch
-*.pch
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
-# Executables
-*.exe
+# Playwright-related
+/.vscode/
+*.log
 *.out
-*.app
+test-results/
+playwright-report/
+
+# Coverage folder
+coverage/
+
+# Environment variables
+.env
+.env.* 
+
+# Build outputs
+dist/
+build/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Editor-specific
+.idea/
+.vscode/
+*.swp
+
+# Playwright
+/playwright-report/
+/blob-report/
+/playwright/.cache/
