@@ -38,68 +38,99 @@ import { test, expect } from '@playwright/test';
 // });
 
 // test.describe('Common Meta Tags Tests', () => {
-  
+
 //     test.beforeEach(async ({ page }) => {
 //       await page.goto('https://www.teamatical.com');
 //     });
-  
+
 //     test('should have correct charset meta tag', async ({ page }) => {
 //       const charset = await page.locator('meta[charset]').getAttribute('charset');
 //       expect(charset).toBe('utf-8');
 //     });
-  
+
 //     test('should have correct viewport meta tag', async ({ page }) => {
 //       const viewport = await page.locator('meta[name="viewport"]').getAttribute('content');
 //       expect(viewport).toBe('width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no');
 //     });
-  
+
 //     test('should have correct application-name meta tag', async ({ page }) => {
 //       const appName = await page.locator('meta[name="application-name"]').getAttribute('content');
 //       expect(appName).toBe('Teamatical');
 //     });
-  
+
 //   });
 
-  test.describe('Localized Meta Tags Tests', () => {
-    const locales = [
-    //   { code: 'en', langPattern: /[a-zA-Z]/ }, // Английский
-      { code: 'th', langPattern: /&#xE\d{2};/ }, // Закодированный тайский
-    //   { code: 'fr', langPattern: /[a-zA-Zàâçéèêëîïôûùüÿñæœ]/ }, // Французский
-    //   { code: 'es', langPattern: /[a-zA-Záéíñóúü]/ }, // Испанский
-    //   { code: 'nl', langPattern: /[a-zA-Zäëïöü]/ }, // Нидерландский
-    //   { code: 'de', langPattern: /[a-zA-Zäöüß]/ }, // Немецкий
-    //   { code: 'ru', langPattern: /[а-яА-ЯёЁ]/ } // Русский
-    ];
-  
-    locales.forEach(locale => {
-        test.describe(`${locale.code} locale meta tags`, () => {
-          test.beforeEach(async ({ page }) => {
-            await page.goto(`https://www.teamatical.com?lang=${locale.code}`);
-          });
-    
-          test('should have correctly localized meta description', async ({ page }) => {
-            const metaDescription = await page.locator('meta[name="description"]').getAttribute('content');
-            try {
-              expect(metaDescription).toMatch(locale.langPattern);
-            } catch (error) {
-              console.error(`Meta Description Test Failed for Locale: ${locale.code}`);
-              console.error(`Pattern: ${locale.langPattern}`);
-              console.error(`Meta Description: ${metaDescription}`);
-              throw error;
-            }
-          });
-    
-          test('should have correctly localized meta keywords', async ({ page }) => {
-            const keywords = await page.locator('meta[name="keywords"]').getAttribute('content');
-            try {
-              expect(keywords).toMatch(locale.langPattern);
-            } catch (error) {
-              console.error(`Keywords Test Failed for Locale: ${locale.code}`);
-              console.error(`Pattern: ${locale.langPattern}`);
-              console.error(`Keywords: ${keywords}`);
-              throw error;
-            }
-          });
-        });
-      });
-  });
+// test.describe('Localized Meta Tags Tests', () => {
+//     const locales = [
+//         { code: 'en', langPattern: /[a-zA-Z]/ }, // Английский
+//         { code: 'th', langPattern: /[\u0E00-\u0E7F]/ }, // Закодированный тайский
+//         { code: 'fr', langPattern: /[a-zA-Zàâçéèêëîïôûùüÿñæœ]/ }, // Французский
+//         { code: 'es', langPattern: /[a-zA-Záéíñóúü]/ }, // Испанский
+//         { code: 'nl', langPattern: /[a-zA-Zäëïöü]/ }, // Нидерландский
+//         { code: 'de', langPattern: /[a-zA-Zäöüß]/ }, // Немецкий
+//         { code: 'ru', langPattern: /[а-яА-ЯёЁ]/ } // Русский
+//     ];
+
+//     locales.forEach(locale => {
+//         test.describe(`${locale.code} locale meta tags`, () => {
+//             test.use({
+//                 locale: locale.code,
+//                 extraHTTPHeaders: {
+//                     'Accept-Language': `${locale.code},en;q=0.8`
+//                 }
+//             });
+//             test.use({ ignoreHTTPSErrors: true });
+//             // test.beforeEach(async ({ page }) => {
+//             //     await page.context().clearCookies();
+//             //     const page_path = `https://www.teamatical.com?lang=${locale.code}`;
+
+//             //     console.log(`${page_path}`);
+
+//             //     await page.goto(page_path, { waitUntil: 'networkidle' });
+//             //     await page.waitForTimeout(2000); // Задержка в 3 секунды
+//             //     const title = await page.title();
+//             //     console.log(`Page title: ${title}`);
+
+//             // });
+
+//             test.beforeEach(async ({ browser }) => {
+//                 const context = await browser.newContext(); // Создаем новый контекст
+//                 const page = await context.newPage();
+//                 await page.goto(`https://www.teamatical.com?lang=${locale.code}`, { waitUntil: 'networkidle' });
+//                 await page.waitForTimeout(2000);
+
+//                 // Вывод содержимого метатегов после загрузки страницы
+//                 await page.evaluate(() => {
+//                     const metaDescription = document.querySelector('meta[name="description"]')?.getAttribute('content');
+//                     const metaKeywords = document.querySelector('meta[name="keywords"]')?.getAttribute('content');
+//                     console.log('Meta Description:', metaDescription);
+//                     console.log('Meta Keywords:', metaKeywords);
+//                 });
+//             });
+
+//             test('should have correctly localized meta description', async ({ page }) => {
+//                 const metaDescription = await page.locator('meta[name="description"]').getAttribute('content');
+//                 try {
+//                     expect(metaDescription).toMatch(locale.langPattern);
+//                 } catch (error) {
+//                     console.error(`Meta Description Test Failed for Locale: ${locale.code}`);
+//                     console.error(`Pattern: ${locale.langPattern}`);
+//                     console.error(`Meta Description: ${metaDescription}`);
+//                     throw error;
+//                 }
+//             });
+
+//             test('should have correctly localized meta keywords', async ({ page }) => {
+//                 const keywords = await page.locator('meta[name="keywords"]').getAttribute('content');
+//                 try {
+//                     expect(keywords).toMatch(locale.langPattern);
+//                 } catch (error) {
+//                     console.error(`Keywords Test Failed for Locale: ${locale.code}`);
+//                     console.error(`Pattern: ${locale.langPattern}`);
+//                     console.error(`Keywords: ${keywords}`);
+//                     throw error;
+//                 }
+//             });
+//         });
+//     });
+// });
